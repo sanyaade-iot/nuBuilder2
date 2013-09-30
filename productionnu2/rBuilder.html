@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<style TYPE='text/css'>
+.moveup            {position:relative;background-color:gray;border:solid;border-width:1px;color:white;border-color:black}
+.delSection        {position:relative;background-color:gray;border:solid;border-width:1px;color:white;border-color:black}
+.theObject         {cursor:default;overflow:hidden;position:absolute;padding:0px;}
+.theHeader         {position:absolute;font-size:14px;color:white;background-color:black;height:10px;}
+.thePropertyLeft   {position:absolute;font-size:14px;color:white;height:10px;left:10px}
+.thePropertyRight  {position:absolute;font-size:14px;color:white;height:10px;left:200px;width:400px}
+.thesortorderRight {position:absolute;font-size:14px;color:white;height:10px;left:330px;width:400px}
+.thesortorderLeft {position:absolute;font-size:14px;color:white;height:10px;left:20px;width:300px}
+</style>
+
+
+<script>
+
+	firstOne                              = Object();
+	mouseState                            = '';
+	offsetX                               = 0;
+	offsetY                               = 0;
+	
+	function mouseDown(e, pThis){
+
+		if(!e){e=window.event;}
+		mouseState                        = pThis.id;
+		offsetX                           = e.clientX - parseInt(pThis.style.left);
+		offsetY                           = e.clientY - parseInt(pThis.style.top);
+		
+	}
+
+	function mouseUp(){
+		mouseState = '';
+	}
+
+	function mouseMove(e){
+
+	   if(mouseState == ''){return;}
+	   if(!e){e=window.event;}
+	   var pThis           = document.getElementById(mouseState);
+	   pThis.style.left    = e.clientX - offsetX + 'px';
+	   pThis.style.top     = e.clientY - offsetY + 'px';
+	   
+	}
+
+	function nuDialog(nuID){
+
+		this.theID                        = nuID;
+		newDialog                         = document.createElement("div");
+		newDialog.setAttribute('id', 'box'+this.theID);
+		document.body.appendChild(newDialog);
+		newD                              = document.getElementById('box'+this.theID);
+
+		newD.style.left                   = '100px';
+		newD.style.height                 = '100px';
+		newD.style.top                    = '100px';
+		newD.style.width                  = '100px';
+		newD.style.position               = 'absolute';
+		newD.style.visibility             = 'visible';
+		newD.style.backgroundColor        = 'darkgrey';
+		newD.style.borderColor            = 'black';
+		newD.style.borderWidth            = '1px';
+		newD.style.borderStyle            = 'solid';
+
+		newBar                            = document.createElement("div");
+		newBar.setAttribute('id', 'bar'+this.theID);
+		newD.appendChild(newBar);
+		var newB                          = document.getElementById('bar'+this.theID);
+
+		newB.style.left                   = '0px';
+		newB.style.height                 = '22px';
+		newB.style.top                    = '0px';
+		newB.style.width                  = '100px';
+		newB.style.position               = 'relative';
+		newB.style.visibility             = 'visible';
+		newB.style.backgroundColor        = 'black';
+		newB.onmousedown                  = function(){mouseDown(e, this);alert(mouseState);};
+
+		newClose                          = document.createElement("div");
+		newClose.setAttribute('id', 'close'+this.theID);
+		newClose.innerHTML                = 'X';
+		newB.appendChild(newClose);
+		var newC                          = document.getElementById('close'+this.theID);
+
+		newC.style.left                   = '0px';
+		newC.style.height                 = '22px';
+		newC.style.top                    = '0px';
+		newC.style.width                  = '12px';
+		newC.style.position               = 'relative';
+		newC.style.visibility             = 'visible';
+		newC.style.backgroundColor        = 'black';
+		newC.style.fontFamily             = 'arial';
+		newC.style.fontWeight             = 'bold';
+		newC.style.color                  = 'white';
+		
+		this.moveDialog                   = function(x, y) {
+			
+			var nuLeft                    = parseInt(newD.style.left);
+			var nuTop                     = parseInt(newD.style.top);
+			newD.style.left        = String(Number(nuLeft + 10)) + 'px';
+			alert(Event.clientX);
+		}
+		
+		this.hideDialog                   = function(x, y) {
+			
+			newD.style.visibility  = 'hidden';
+			newB.style.visibility  = 'hidden';
+			newC.style.visibility  = 'hidden';
+		}
+		
+		this.showDialog                   = function(x, y) {
+			
+			newD.style.visibility  = 'visible';
+			newB.style.visibility  = 'visible';
+			newC.style.visibility  = 'visible';
+		}
+		
+	}
+
+
+	
+	
+</script>
+
+
+
+
+<body id='theBody'  onmousemove='mouseMove(event)' onload='firstOne = new nuDialog("D1")'>
+
+<input value='test' type='button' onclick='firstOne.moveDialog()'/>
+<input value='move' type='button' onclick='firstOne.hideDialog()'/>
+
+</body>
+</html>
+

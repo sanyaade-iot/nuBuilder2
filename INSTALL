@@ -1,0 +1,154 @@
+OVERVIEW
+--------
+
+This is the installation documentation for the Linux release of
+nubuilder-10.11.25, released on November 25, 2010.
+
+
+REQUIREMENTS
+------------
+
+nuBuilder requires the following software to be installed before it can used.
+
+  * Apache
+  * PHP (MySQL extension required)
+  * MySQL
+  * Postfix (optional)
+
+Emailing reports will require the PHP CURL extension to be installed. Emails can
+be sent via a local SMTP server such as Postfix, or they can be sent using a
+remote SMTP, `sendmail', or PHP's built-in `mail()' function.
+
+
+INSTALLATION
+------------
+
+STEP ONE - INSTALL AND CONFIGURE SERVER SOFTWARE
+------------------------------------------------
+  
+Install and configure Apache, PHP and MySQL, enabling PHP's MySQL extension and
+CURL extension if required.
+
+PHP's magic quotes setting needs to be turned off, and the register_globals
+setting needs to be turned on.
+
+** NOTE **  Reliance on register_globals being enabled will be removed from an
+            upcoming release of nuBuilder.
+
+Optionally install and configure an SMTP server.
+  
+  
+STEP TWO - INSTALL NUBUILDER
+----------------------------
+  
+Extract the contents of the nuBuilder tar gz into your web root, or any
+subdirectory in the web root.
+  
+** NOTE **  An `index.php' file will be extracted during this process which will
+            overwrite any existing `index.php' where you extract to. nuBuilder's
+            `index.php' is simply for conveniently of logging into the sample
+            site. If you install nuBuilder in a subdirectory of the web root,
+            you will need to modify `index.php' to redirect correctly.
+  
+  # tar --strip-components=1 -xvf nubuilder-[VERSION].tar.gz -C [YOUR WEB ROOT]
+	
+Import the sample site database into MySQL. This will create a database and user
+named `sample'.
+  
+  # mysql -uroot -p[MYSQL ROOT PASSWORD] < [YOUR WEB ROOT]/sample.sql
+	
+Import the sample debtors site database into MySQL. This will create a database
+and user named `sampledebtors'.
+  
+  # mysql -uroot -p[MYSQL ROOT PASSWORD] < [YOUR WEB ROOT]/sampledebtors.sql
+
+Import the nuvideo site database into MySQL. This will create a database
+and user named `nuvideo'.
+  
+  # mysql -uroot -p[MYSQL ROOT PASSWORD] < [YOUR WEB ROOT]/nuvideo.sql
+
+You should now delete the `sample.sql', `sampledebtors.sql' and `nuvideo.sql' 
+scripts from your web root.
+  
+  
+STEP THREE - CONFIGURE NUBUILDER
+--------------------------------
+
+nuBuilder has a global configuration file, `config.php' in the `productionnu2'
+directory. It supports the following configuration variables:
+
+  $NUGlobeadminPassword         = "secret";
+  $NUPHPExecutable              = "/usr/bin/php";
+  $NUMailMethod                 = "smtp";
+  $NUSMTPHost                   = "127.0.0.1";
+  $NUSMTPUsername               = "username";
+  $NUSMTPPassword               = "password";
+
+
+  $NUGlobeadminPassword
+  *********************
+  
+  This is the password for the `globeadmin' user. `globeadmin' is used for
+  developing nuBuilder applications. This user has a global password, which is
+  configured here, and also a site specific password, which is configured in the
+  `config.php' in each site's login directory. Either password can be used for
+  logging in to each site.
+  
+  $NUPHPExecutable
+  ****************
+  
+  When set to the path of your PHP command line interface, it enables a PHP
+  syntax check button on the nuBuilder PHP code edit areas.
+  
+Note: The variables $NUMailMethod, $NUSMTPHost, $NUSMTPUsername, $NUSMTPPassword, $NUSMTPUseSSL, 
+and NUSMTPPort are no longer used in nuBuilder. The nuSendEmail() function inside nuBuilder reads these 
+settings from the zzsys_setup table. NuBuilder requires you to enter your SMTP Server information in order to send emails.
+Eg. in order to have GMail be your SMTP server, you would enter the following in the Email Settings on the Setup Tab of nuBuilder.
+    Auth SMTP username:     user@gmail.com
+    Auth SMTP password:     myPassword
+    Auth SMTP host:         smtp.gmail.com
+    Auth SMTP From Address: user@gmail.com
+    Auth SMTP From Name:    Company Email
+    Auth SMTP port:         465
+    Auth SMTP use SSL:      YES
+     
+
+Each nuBuilder site also has it's own `config.php'. It supports the following
+configuration variables:
+
+
+  $DBHost                 = "127.0.0.1";
+  $DBName                 = "sample";
+  $DBUser                 = "sample";
+  $DBPassword             = "samplepass";
+  $DBGlobeadminPassword   = "sampleglobeadmin";
+
+  
+  $DBHost
+  *******
+  
+  The MySQL server which hosts this site's database.
+  
+  $DBName
+  *******
+  
+  The name of the database which this site uses.
+  
+  $DBUser
+  *******
+  
+  Any MySQL user which has full permissions on the database specified by
+  `$DBName'. By default, nuBuilder will not attempt to access any other
+  database.
+  
+  $DBPassword
+  ***********
+  
+  The password for the MySQL user specified by `$DBUser'.
+  
+  $DBGlobeadminPassword
+  *********************
+  
+  An optional `globeadmin' password which is specific to this site. Either this
+  password or the one specified in the global `config.php' can be used for
+  logging in as `globeadmin'.

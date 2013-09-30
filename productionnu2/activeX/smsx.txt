@@ -1,0 +1,13 @@
+Information on smsx.cab, 31-12-2009
+
+smsx.cab is the ActiveX Component file for MeadCo's ScriptX free printing utility.
+This component is included as the free license allows free distribution.
+Note that this component will only work fully on Internet Explorer.
+On other browsers the ActiveX component will not be used, instead it will simply 
+call window.print() which will open the print dialogue box.
+
+The component is included by report_object.php when autoPrint is called.
+
+The free ScriptX CAB file can be found at http://www.meadroid.com/scriptx/sxdownload.asp
+Documentation at http://www.meadroid.com/scriptx/docs/printdoc.asp
+Details on free deployment at http://www.meadroid.com/scriptx/freedep.asp

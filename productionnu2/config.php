@@ -1,0 +1,5 @@
+<?php
+
+$NUGlobeadminPassword = '123';
+
+?>
