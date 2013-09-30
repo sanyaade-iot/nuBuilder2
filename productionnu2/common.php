@@ -3,7 +3,7 @@
 ** File:           common.php
 ** Author:         nuSoftware
 ** Created:        2007/04/26
-** Last modified:  2012/08/30
+** Last modified:  2013/09/30
 **
 ** Copyright 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 nuSoftware
 **
@@ -408,6 +408,7 @@ function accessableForm(){
 function hideFormButton($pButton){
 
 	$a  = $_SESSION['nu_access_level']; 
+    $f  = $_GET['f'];
 	
 	if($a == 'globeadmin'){
 		return false;
@@ -416,6 +417,7 @@ function hideFormButton($pButton){
 	$s  = "SELECT saf_" . $pButton . "_button as button FROM zzsys_access_level_form ";
 	$s .= "INNER JOIN zzsys_access_level ON saf_zzsys_access_level_id = zzsys_access_level_id ";
 	$s .= "AND sal_name = '$a' ";
+	$s .= "AND saf_zzsys_form_id = '$f' ";
 
 	$t  = nuRunQuery($s);
 	$r  = db_fetch_object($t);
